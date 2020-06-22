@@ -1,6 +1,6 @@
 package encryptdecrypt.encryption;
 
-public class Shift extends Encryption {
+public class Shift implements Encryption {
     @Override
     public String encrypt(String in, int key) {
         StringBuilder out = new StringBuilder();

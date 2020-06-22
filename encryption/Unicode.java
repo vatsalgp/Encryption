@@ -1,6 +1,6 @@
 package encryptdecrypt.encryption;
 
-public class Unicode extends Encryption {
+public class Unicode implements Encryption {
     @Override
     public String encrypt(String in, int key) {
         StringBuilder out = new StringBuilder();
