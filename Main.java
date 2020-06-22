@@ -4,15 +4,35 @@ import encryptdecrypt.encryption.*;
 import encryptdecrypt.io.*;
 
 public class Main {
+    private static int key = 0;
+    private static String alg = "shift";
+    private static String mode = "enc";
+    private static String result = "";
+    private static String data = "";
+    private static String in = null;
+    private static String out = null;
+    private static Encryption encryption = null;
+
     public static void main(String[] args) {
-        int key = 0;
-        String alg = "shift";
-        String mode = "enc";
-        String result = "";
-        String data = "";
-        String in = null;
-        String out = null;
-        Encryption encryption = null;
+        parse(args);
+        if (in != null)
+            data = IOString.readFromFile(in);
+        switch (mode) {
+            case "enc":
+                result = encryption.encrypt(data, key);
+                break;
+            case "dec":
+                result = encryption.decrypt(data, key);
+                break;
+            default:
+        }
+        if (out != null)
+            IOString.writeToFile(out, result);
+        else
+            System.out.println(result);
+    }
+
+    private static void parse(String[] args) {
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "-mode":
@@ -36,24 +56,14 @@ public class Main {
                 default:
             }
         }
-        if (in != null)
-            data = IOString.readFromFile(in);
-        if (alg.equals("shift"))
-            encryption = new Shift();
-        else
-            encryption = new Unicode();
-        switch (mode) {
-            case "enc":
-                result = encryption.encrypt(data, key);
+        switch (alg) {
+            case "shift":
+                encryption = new Shift();
                 break;
-            case "dec":
-                result = encryption.decrypt(data, key);
+            case "unicode":
+                encryption = new Unicode();
                 break;
             default:
         }
-        if (out != null)
-            IOString.writeToFile(out, result);
-        else
-            System.out.println(result);
     }
 }
